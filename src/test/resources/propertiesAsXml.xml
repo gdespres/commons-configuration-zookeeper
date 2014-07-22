@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="application.name">name</entry>
+    <entry key="application.version">version</entry>
+    <entry key="application.fullname">${application.name}-${application.version}</entry>
+</properties>

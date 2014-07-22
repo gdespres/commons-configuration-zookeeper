@@ -12,7 +12,7 @@ import org.apache.curator.framework.CuratorFramework;
 /**
  *
  */
-public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfiguration {
+public class ZooKeeperXMLPropertiesConfiguration extends ZooKeeperPropertiesConfiguration {
 
     // ========================================================================
     // CONSTRUCTORS
@@ -21,7 +21,7 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
     /**
      * @throws ConfigurationException
      */
-    public ZooKeeperPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
+    public ZooKeeperXMLPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
         super(client);
     }
 
@@ -29,7 +29,7 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
      * @throws ConfigurationException
      *
      */
-    public ZooKeeperPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
+    public ZooKeeperXMLPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
         super(client, path);
     }
 
@@ -45,7 +45,7 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
 
         Properties properties = new Properties();
         try {
-            properties.load(in);
+            properties.loadFromXML(in);
             for (String key : properties.stringPropertyNames()) {
                 String value = properties.getProperty(key);
                 addProperty(key, value);
