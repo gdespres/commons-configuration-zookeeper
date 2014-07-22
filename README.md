@@ -14,7 +14,7 @@ try {
     ZooKeeperPropertiesConfiguration config = new ZooKeeperPropertiesConfiguration(client, "/path/to/file.properties");
     
     // add reloading strategy
-    config.setReloadingStrategy(new ZooKeeperNodeOnChangeReloadingStrategy()); // properties are reloaded when zookeeper node change.
+    config.setReloadingStrategy(new ZooKeeperNodeOnChangeReloadingStrategy()); // properties are reloaded when zookeeper node changes.
     
     // add listener
     config.addConfigurationListener(new ConfigurationListener() {
@@ -28,7 +28,7 @@ try {
     String property = config.getString("property.name");
 } catch (ConfigurationException e) {
 
-    // Exception throwed if node doesn't exist or if node format is not valid.
+    // Exception thrown if node doesn't exist or if node format is not valid.
 }
 ```
 
