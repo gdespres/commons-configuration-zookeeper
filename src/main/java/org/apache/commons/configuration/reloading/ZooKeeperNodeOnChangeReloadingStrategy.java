@@ -18,8 +18,6 @@ public class ZooKeeperNodeOnChangeReloadingStrategy implements IZooKeeperNodeRel
 
     private IZooKeeperNodeConfiguration _configuration;
 
-    private boolean _reloadingRequired;
-
     // ========================================================================
     // PUBLIC METHODS
     // ========================================================================
@@ -38,19 +36,9 @@ public class ZooKeeperNodeOnChangeReloadingStrategy implements IZooKeeperNodeRel
             node.getListenable().addListener(new NodeCacheListener() {
                 @Override
                 public void nodeChanged() throws Exception {
-                    _reloadingRequired = true;
+                    _configuration.reload();
                 }
             });
         }
-    }
-
-    @Override
-    public boolean reloadingRequired() {
-        return _reloadingRequired;
-    }
-
-    @Override
-    public void reloadingPerformed() {
-        _reloadingRequired = false;
     }
 }

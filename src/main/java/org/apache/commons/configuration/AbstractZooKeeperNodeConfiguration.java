@@ -28,7 +28,7 @@ public abstract class AbstractZooKeeperNodeConfiguration
     // ========================================================================
 
     /**
-     *
+     * 
      * @param client
      */
     public AbstractZooKeeperNodeConfiguration(final CuratorFramework client) {
@@ -36,8 +36,8 @@ public abstract class AbstractZooKeeperNodeConfiguration
     }
 
     /**
-     *
-     *
+     * 
+     * 
      * @param client
      * @param path
      */
@@ -48,11 +48,6 @@ public abstract class AbstractZooKeeperNodeConfiguration
     // ========================================================================
     // PUBLIC METHODS
     // ========================================================================
-
-    public IZooKeeperNodeReloadingStrategy getReloadingStrategy() {
-
-        return (IZooKeeperNodeReloadingStrategy) this._strategy;
-    }
 
     public void setReloadingStrategy(final IZooKeeperNodeReloadingStrategy strategy) {
 

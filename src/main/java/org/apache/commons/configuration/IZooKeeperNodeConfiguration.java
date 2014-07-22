@@ -19,4 +19,6 @@ public interface IZooKeeperNodeConfiguration extends IZooKeeperConfiguration {
     NodeCache getNode();
 
     void load(InputStream in) throws ConfigurationException;
+
+    void reload();
 }

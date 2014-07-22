@@ -58,8 +58,8 @@ public abstract class AbstractZooKeeperConfiguration
     }
 
     /**
-     *
-     *
+     * 
+     * 
      * @param client
      * @param path
      */
@@ -78,6 +78,11 @@ public abstract class AbstractZooKeeperConfiguration
     // PUBLIC METHODS
     // ========================================================================
 
+    public IZooKeeperReloadingStrategy getReloadingStrategy() {
+
+        return this._strategy;
+    }
+
     @Override
     public void setPath(final String path) {
 
@@ -93,8 +98,9 @@ public abstract class AbstractZooKeeperConfiguration
 
     /**
      * Load the configuration from the underlying path.
-     *
-     * @throws ConfigurationException if loading of the configuration fails.
+     * 
+     * @throws ConfigurationException
+     *             if loading of the configuration fails.
      */
     public void load() throws ConfigurationException {
 
@@ -136,15 +142,16 @@ public abstract class AbstractZooKeeperConfiguration
             if (_noReload == 0) {
                 try {
                     enterNoReload();
-                    if (_strategy.reloadingRequired()) {
-                        if (getLogger().isInfoEnabled()) {
-                            getLogger().info("Reloading configuration for path " + getPath());
-                        }
-                        refresh();
-
-                        // notify the strategy
-                        _strategy.reloadingPerformed();
-                    }
+                    // if (_strategy.reloadingRequired()) {
+                    // if (getLogger().isInfoEnabled()) {
+                    // getLogger().info("Reloading configuration for path " +
+                    // getPath());
+                    // }
+                    refresh();
+                    //
+                    // // notify the strategy
+                    // _strategy.reloadingPerformed();
+                    // }
                 } catch (Exception e) {
                     fireError(EVENT_RELOAD, null, null, e);
                 } finally {
@@ -174,7 +181,7 @@ public abstract class AbstractZooKeeperConfiguration
     public Object getProperty(final String pKey) {
 
         synchronized (_reloadLock) {
-            reload();
+            // reload();
             return super.getProperty(pKey);
         }
     }
@@ -185,7 +192,7 @@ public abstract class AbstractZooKeeperConfiguration
     @Override
     public boolean isEmpty() {
         synchronized (_reloadLock) {
-            reload();
+            // reload();
             return super.isEmpty();
         }
     }
@@ -196,7 +203,7 @@ public abstract class AbstractZooKeeperConfiguration
     @Override
     public boolean containsKey(final String pKey) {
         synchronized (_reloadLock) {
-            reload();
+            // reload();
             return super.containsKey(pKey);
         }
     }
@@ -207,7 +214,7 @@ public abstract class AbstractZooKeeperConfiguration
     @Override
     public Iterator<String> getKeys() {
 
-        reload();
+        // reload();
         List<String> keyList = new LinkedList<>();
         enterNoReload();
         try {
@@ -253,7 +260,7 @@ public abstract class AbstractZooKeeperConfiguration
     }
 
     /**
-     *
+     * 
      * @param closeable
      */
     protected final void closeSilent(final Closeable closeable) {
