@@ -3,19 +3,11 @@
  */
 package org.apache.commons.configuration.reloading;
 
-import org.apache.commons.configuration.ZooKeeperNodeConfiguration;
 
 /**
  *
  */
-public class ZooKeeperNodeInvariantReloadingStrategy implements ZooKeeperNodeReloadingStrategy {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setConfiguration(final ZooKeeperNodeConfiguration pConfiguration) {
-    }
+public class ZooKeeperInvariantReloadingStrategy implements IZooKeeperReloadingStrategy {
 
     /**
      * {@inheritDoc}

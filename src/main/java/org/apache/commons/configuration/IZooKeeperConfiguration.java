@@ -3,14 +3,10 @@
  */
 package org.apache.commons.configuration;
 
-import java.io.InputStream;
-
-import org.apache.curator.framework.recipes.cache.NodeCache;
-
 /**
  *
  */
-public interface ZooKeeperNodeConfiguration extends Configuration {
+public interface IZooKeeperConfiguration extends Configuration {
 
     // ========================================================================
     // CONSTANTS
@@ -19,10 +15,12 @@ public interface ZooKeeperNodeConfiguration extends Configuration {
     public static final int EVENT_RELOAD = 20;
 
     // ========================================================================
-    // METHODS
+    // PUBLIC METHODS
     // ========================================================================
 
-    NodeCache getNode();
+    void setPath(String path);
 
-    void load(InputStream in) throws ConfigurationException;
+    String getPath();
+
+    void load(String path) throws ConfigurationException;
 }

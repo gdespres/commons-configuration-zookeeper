@@ -3,20 +3,20 @@
  */
 package org.apache.commons.configuration.reloading;
 
-import org.apache.commons.configuration.ZooKeeperNodeConfiguration;
+import org.apache.commons.configuration.IZooKeeperNodeConfiguration;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 
 /**
  *
  */
-public class ZooKeeperNodeOnChangeReloadingStrategy implements ZooKeeperNodeReloadingStrategy {
+public class ZooKeeperNodeOnChangeReloadingStrategy implements IZooKeeperNodeReloadingStrategy {
 
     // ========================================================================
     // ATTRIBUTES
     // ========================================================================
 
-    private ZooKeeperNodeConfiguration _configuration;
+    private IZooKeeperNodeConfiguration _configuration;
 
     private boolean _reloadingRequired;
 
@@ -25,7 +25,7 @@ public class ZooKeeperNodeOnChangeReloadingStrategy implements ZooKeeperNodeRelo
     // ========================================================================
 
     @Override
-    public void setConfiguration(final ZooKeeperNodeConfiguration configuration) {
+    public void setConfiguration(final IZooKeeperNodeConfiguration configuration) {
 
         this._configuration = configuration;
     }

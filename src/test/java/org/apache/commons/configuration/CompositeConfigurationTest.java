@@ -42,7 +42,7 @@ public class CompositeConfigurationTest extends ZooKeeperConfigurationTest {
 
                 @Override
                 public void configurationChanged(final ConfigurationEvent pEvent) {
-                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == ZooKeeperNodeConfiguration.EVENT_RELOAD) {
+                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == IZooKeeperNodeConfiguration.EVENT_RELOAD) {
                         System.out.println("Path '" + zkApplicationPropertiesPath + "' has changed !");
                     }
                 }
@@ -60,8 +60,8 @@ public class CompositeConfigurationTest extends ZooKeeperConfigurationTest {
 
                 @Override
                 public void configurationChanged(final ConfigurationEvent pEvent) {
-                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == ZooKeeperNodeConfiguration.EVENT_RELOAD) {
-                        System.out.println("Path '" + zkRootPropertiesPath + "' has changed !");
+                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == IZooKeeperNodeConfiguration.EVENT_RELOAD) {
+                        System.out.println("Path '" + pEvent.getPropertyValue() + "' has changed !");
                     }
                 }
             });
