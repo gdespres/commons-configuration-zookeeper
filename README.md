@@ -1,4 +1,4 @@
 commons-configuration-zookeeper
 ===============================
 
-Apache Extention for Commons Configuration
+Apache ZooKeeper extention for Commons Configuration
