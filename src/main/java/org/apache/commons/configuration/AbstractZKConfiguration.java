@@ -73,6 +73,17 @@ public abstract class AbstractZKConfiguration
     // ========================================================================
 
     @Override
+    public String getCompletePath() {
+
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isNotBlank(_client.getNamespace())) {
+            sb.append("/").append(_client.getNamespace());
+        }
+        sb.append(getPath());
+        return sb.toString();
+    }
+
+    @Override
     public void setPath(final String path) {
 
         this._path = StringUtils.startsWith(path, "/") ? path : "/" + path;

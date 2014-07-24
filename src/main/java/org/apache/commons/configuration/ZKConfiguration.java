@@ -24,6 +24,8 @@ public interface ZKConfiguration extends Configuration {
 
     String getPath();
 
+    String getCompletePath();
+
     void load() throws ConfigurationException;
 
     //void load(String path) throws ConfigurationException;

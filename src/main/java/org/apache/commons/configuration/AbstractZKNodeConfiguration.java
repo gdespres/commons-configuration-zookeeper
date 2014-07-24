@@ -94,30 +94,30 @@ public abstract class AbstractZKNodeConfiguration
                     if (!_previousNodeExists && isNodeExists()) { // Creation
 
                         _previousNodeExists = true;
-                        fireEvent(EVENT_NODE_CREATE, null, getPath(), true);
+                        fireEvent(EVENT_NODE_CREATE, null, getCompletePath(), true);
                         setDetailEvents(false);
                         try {
                             load();
                         } finally {
                             setDetailEvents(true);
                         }
-                        fireEvent(EVENT_NODE_CREATE, null, getPath(), false);
+                        fireEvent(EVENT_NODE_CREATE, null, getCompletePath(), false);
 
                     } else if (_previousNodeExists && !isNodeExists()) { // Deletion
 
                         _previousNodeExists = false;
-                        fireEvent(EVENT_NODE_DELETE, null, getPath(), true);
+                        fireEvent(EVENT_NODE_DELETE, null, getCompletePath(), true);
                         setDetailEvents(false);
                         try {
                             clear();
                         } finally {
                             setDetailEvents(true);
                         }
-                        fireEvent(EVENT_NODE_DELETE, null, getPath(), false);
+                        fireEvent(EVENT_NODE_DELETE, null, getCompletePath(), false);
 
                     } else { // Update
 
-                        fireEvent(EVENT_NODE_UPDATE, null, getPath(), true);
+                        fireEvent(EVENT_NODE_UPDATE, null, getCompletePath(), true);
                         setDetailEvents(false);
                         try {
                             clear();
@@ -125,7 +125,7 @@ public abstract class AbstractZKNodeConfiguration
                         } finally {
                             setDetailEvents(true);
                         }
-                        fireEvent(EVENT_NODE_UPDATE, null, getPath(), false);
+                        fireEvent(EVENT_NODE_UPDATE, null, getCompletePath(), false);
                     }
 
                 } catch (Exception e) {

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertThat;
 import org.apache.commons.configuration.event.ConfigurationEvent;
 import org.apache.commons.configuration.event.ConfigurationListener;
 import org.apache.commons.configuration.reloading.ZKNodeChangeEventReloadingStrategy;
+import org.apache.curator.framework.CuratorFramework;
 import org.junit.Test;
 
 /**
@@ -19,7 +20,7 @@ public class ZKPropertiesConfigurationEventTest extends ZKConfigurationTest {
     @Test
     public void testPropertiesCreatedEvent() throws Exception {
 
-        String path = "/" + System.currentTimeMillis() + ".properties";
+        String path = "/prop1.properties";
 
         // Init ZooKeeper
         // no-op
@@ -34,16 +35,17 @@ public class ZKPropertiesConfigurationEventTest extends ZKConfigurationTest {
 
         // Create Node
         client.create().creatingParentsIfNeeded().forPath(path);
-        Thread.sleep(500); // Wait notification
+        Thread.sleep(WAIT_NOTIFICATION_MILLIS); // Wait notification
 
         // Test
         assertThat(testConfigListener.getEventType(), equalTo(ZKPropertiesConfiguration.EVENT_NODE_CREATE));
+        assertThat(testConfigListener.getPath(), equalTo(path));
     }
 
     @Test
     public void testPropertiesChangedEvent() throws Exception {
 
-        String path = "/" + System.currentTimeMillis() + ".properties";
+        String path = "/prop2.properties";
 
         // Init ZooKeeper
         client.create().creatingParentsIfNeeded().forPath(path, "value".getBytes());
@@ -58,22 +60,25 @@ public class ZKPropertiesConfigurationEventTest extends ZKConfigurationTest {
 
         // Update Node
         client.setData().forPath(path, "new value".getBytes());
-        Thread.sleep(500); // Wait notification
+        Thread.sleep(WAIT_NOTIFICATION_MILLIS); // Wait notification
 
         // Test
         assertThat(testConfigListener.getEventType(), equalTo(ZKPropertiesConfiguration.EVENT_NODE_UPDATE));
+        assertThat(testConfigListener.getPath(), equalTo(path));
     }
 
     @Test
     public void testPropertiesDeletedEvent() throws Exception {
 
-        String path = "/" + System.currentTimeMillis() + ".properties";
+        String path = "/prop3.properties";
+        String namespace = "app";
 
         // Init ZooKeeper
-        client.create().creatingParentsIfNeeded().forPath(path, "value".getBytes());
+        CuratorFramework clientWithNamespace = client.usingNamespace(namespace);
+        clientWithNamespace.create().creatingParentsIfNeeded().forPath(path, "value".getBytes());
 
         //
-        ZKPropertiesConfiguration config = new ZKPropertiesConfiguration(client);
+        ZKPropertiesConfiguration config = new ZKPropertiesConfiguration(clientWithNamespace);
         config.setPath(path);
         config.load();
         config.setReloadingStrategy(new ZKNodeChangeEventReloadingStrategy());
@@ -81,16 +86,19 @@ public class ZKPropertiesConfigurationEventTest extends ZKConfigurationTest {
         config.addConfigurationListener(testConfigListener);
 
         // Create Node
-        client.delete().forPath(path);
-        Thread.sleep(500); // Wait notification
+        clientWithNamespace.delete().forPath(path);
+        Thread.sleep(WAIT_NOTIFICATION_MILLIS); // Wait notification
 
         // Test
         assertThat(testConfigListener.getEventType(), equalTo(ZKPropertiesConfiguration.EVENT_NODE_DELETE));
+        assertThat(testConfigListener.getPath(), equalTo("/" + namespace + path));
     }
 
     private class TestConfigurationListener implements ConfigurationListener {
 
         private int eventType;
+
+        private String path;
 
         /**
          * {@inheritDoc}
@@ -100,11 +108,17 @@ public class ZKPropertiesConfigurationEventTest extends ZKConfigurationTest {
 
             if (!pEvent.isBeforeUpdate()) {
                 eventType = pEvent.getType();
+                path = (String) pEvent.getPropertyValue();
+                System.out.println(path);
             }
         }
 
         public int getEventType() {
             return eventType;
+        }
+
+        public String getPath() {
+            return path;
         }
     }
 }
