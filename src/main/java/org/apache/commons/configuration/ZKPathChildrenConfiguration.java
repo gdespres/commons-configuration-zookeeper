@@ -8,7 +8,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 /**
  *
  */
-public interface IZooKeeperPathChildrenConfiguration extends IZooKeeperConfiguration {
+public interface ZKPathChildrenConfiguration extends ZKConfiguration {
 
     PathChildrenCache getPathChildren();
 }

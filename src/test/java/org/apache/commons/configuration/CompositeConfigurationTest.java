@@ -9,13 +9,13 @@ import static org.junit.Assert.fail;
 
 import org.apache.commons.configuration.event.ConfigurationEvent;
 import org.apache.commons.configuration.event.ConfigurationListener;
-import org.apache.commons.configuration.reloading.ZooKeeperNodeOnChangeReloadingStrategy;
+import org.apache.commons.configuration.reloading.ZKNodeChangeEventReloadingStrategy;
 import org.junit.Test;
 
 /**
  *
  */
-public class CompositeConfigurationTest extends ZooKeeperConfigurationTest {
+public class CompositeConfigurationTest extends ZKConfigurationTest {
 
     @Test
     public void testCompositeConfiguration() throws Exception {
@@ -36,13 +36,13 @@ public class CompositeConfigurationTest extends ZooKeeperConfigurationTest {
 
         // ZooKeeper Application Properties
         try {
-            ZooKeeperPropertiesConfiguration zkApplicationPropertiesConfig = new ZooKeeperPropertiesConfiguration(client.usingNamespace(applicationName), fileName);
-            zkApplicationPropertiesConfig.setReloadingStrategy(new ZooKeeperNodeOnChangeReloadingStrategy());
+            ZKPropertiesConfiguration zkApplicationPropertiesConfig = new ZKPropertiesConfiguration(client.usingNamespace(applicationName), fileName);
+            zkApplicationPropertiesConfig.setReloadingStrategy(new ZKNodeChangeEventReloadingStrategy());
             zkApplicationPropertiesConfig.addConfigurationListener(new ConfigurationListener() {
 
                 @Override
                 public void configurationChanged(final ConfigurationEvent pEvent) {
-                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == IZooKeeperNodeConfiguration.EVENT_RELOAD) {
+                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == ZKNodeConfiguration.EVENT_RELOAD) {
                         System.out.println("Path '" + zkApplicationPropertiesPath + "' has changed !");
                     }
                 }
@@ -54,13 +54,13 @@ public class CompositeConfigurationTest extends ZooKeeperConfigurationTest {
 
         // ZooKeeper Root Properties
         try {
-            ZooKeeperPropertiesConfiguration zkRootPropertiesConfig = new ZooKeeperPropertiesConfiguration(client, fileName);
-            zkRootPropertiesConfig.setReloadingStrategy(new ZooKeeperNodeOnChangeReloadingStrategy());
+            ZKPropertiesConfiguration zkRootPropertiesConfig = new ZKPropertiesConfiguration(client, fileName);
+            zkRootPropertiesConfig.setReloadingStrategy(new ZKNodeChangeEventReloadingStrategy());
             zkRootPropertiesConfig.addConfigurationListener(new ConfigurationListener() {
 
                 @Override
                 public void configurationChanged(final ConfigurationEvent pEvent) {
-                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == IZooKeeperNodeConfiguration.EVENT_RELOAD) {
+                    if (!pEvent.isBeforeUpdate() && pEvent.getType() == ZKNodeConfiguration.EVENT_RELOAD) {
                         System.out.println("Path '" + pEvent.getPropertyValue() + "' has changed !");
                     }
                 }

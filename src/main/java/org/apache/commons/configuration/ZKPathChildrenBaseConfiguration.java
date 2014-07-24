@@ -3,7 +3,7 @@
  */
 package org.apache.commons.configuration;
 
-import org.apache.commons.configuration.reloading.IZooKeeperPathChildrenReloadingStrategy;
+import org.apache.commons.configuration.reloading.ZKPathChildrenReloadingStrategy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -12,9 +12,9 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache.StartMode;
 /**
  *
  */
-public class ZooKeeperPathChildrenConfiguration
-        extends AbstractZooKeeperConfiguration
-        implements IZooKeeperPathChildrenConfiguration {
+public class ZKPathChildrenBaseConfiguration
+        extends AbstractZKConfiguration
+        implements ZKPathChildrenConfiguration {
 
     // ========================================================================
     // ATTRIBUTES
@@ -29,14 +29,14 @@ public class ZooKeeperPathChildrenConfiguration
     /**
      * @param pClient
      */
-    public ZooKeeperPathChildrenConfiguration(final CuratorFramework pClient) {
+    public ZKPathChildrenBaseConfiguration(final CuratorFramework pClient) {
         super(pClient);
     }
 
     /**
      *
      */
-    public ZooKeeperPathChildrenConfiguration(final CuratorFramework pClient, final String pPath) throws ConfigurationException {
+    public ZKPathChildrenBaseConfiguration(final CuratorFramework pClient, final String pPath) throws ConfigurationException {
         super(pClient, pPath);
     }
 
@@ -44,9 +44,8 @@ public class ZooKeeperPathChildrenConfiguration
     // PUBLIC METHODS
     // ========================================================================
 
-    public void setReloadingStrategy(final IZooKeeperPathChildrenReloadingStrategy strategy) {
+    public void setReloadingStrategy(final ZKPathChildrenReloadingStrategy strategy) {
 
-        this._strategy = strategy;
         strategy.setConfiguration(this);
         strategy.init();
     }
@@ -61,24 +60,31 @@ public class ZooKeeperPathChildrenConfiguration
      * {@inheritDoc}
      */
     @Override
-    public void load(final String path) throws ConfigurationException {
+    public void load() throws ConfigurationException {
+
+        if (_pathChildren != null) {
+            load(_pathChildren);
+        }
+        else {
+            load(getPath());
+        }
+    }
+
+    protected void load(final String path) throws ConfigurationException {
 
         PathChildrenCache pathChildren = new PathChildrenCache(_client, path, true);
         try {
             pathChildren.start(StartMode.BUILD_INITIAL_CACHE);
+            this._pathChildren = pathChildren;
             if (pathChildren.getCurrentData() != null) {
-                this._pathChildren = pathChildren;
                 load(pathChildren);
-            }
-            else {
-                throw new ConfigurationException("Unable to load the path children " + path);
             }
         } catch (Exception e) {
             throw new ConfigurationException("Unable to start path children cache for path " + path, e);
         }
     }
 
-    public void load(final PathChildrenCache pathChildren) throws ConfigurationException {
+    protected void load(final PathChildrenCache pathChildren) throws ConfigurationException {
 
         if (pathChildren != null && pathChildren.getCurrentData() != null) {
             for (ChildData child : pathChildren.getCurrentData()) {

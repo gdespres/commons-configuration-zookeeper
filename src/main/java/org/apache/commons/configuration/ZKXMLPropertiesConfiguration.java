@@ -12,7 +12,7 @@ import org.apache.curator.framework.CuratorFramework;
 /**
  *
  */
-public class ZooKeeperXMLPropertiesConfiguration extends ZooKeeperPropertiesConfiguration {
+public class ZKXMLPropertiesConfiguration extends ZKPropertiesConfiguration {
 
     // ========================================================================
     // CONSTRUCTORS
@@ -21,7 +21,7 @@ public class ZooKeeperXMLPropertiesConfiguration extends ZooKeeperPropertiesConf
     /**
      * @throws ConfigurationException
      */
-    public ZooKeeperXMLPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
+    public ZKXMLPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
         super(client);
     }
 
@@ -29,7 +29,7 @@ public class ZooKeeperXMLPropertiesConfiguration extends ZooKeeperPropertiesConf
      * @throws ConfigurationException
      *
      */
-    public ZooKeeperXMLPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
+    public ZKXMLPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
         super(client, path);
     }
 

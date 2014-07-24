@@ -3,7 +3,7 @@
  */
 package org.apache.commons.configuration.reloading;
 
-import org.apache.commons.configuration.IZooKeeperPathChildrenConfiguration;
+import org.apache.commons.configuration.ZKPathChildrenConfiguration;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -13,20 +13,20 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 /**
  *
  */
-public class ZooKeeperPathChildrenOnChangeReloadingStrategy implements IZooKeeperPathChildrenReloadingStrategy {
+public class ZKPathChildrenChangeEventReloadingStrategy implements ZKPathChildrenReloadingStrategy {
 
     // ========================================================================
     // ATTRIBUTES
     // ========================================================================
 
-    private IZooKeeperPathChildrenConfiguration _configuration;
+    private ZKPathChildrenConfiguration _configuration;
 
     // ========================================================================
     // PUBLIC METHODS
     // ========================================================================
 
     @Override
-    public void setConfiguration(final IZooKeeperPathChildrenConfiguration configuration) {
+    public void setConfiguration(final ZKPathChildrenConfiguration configuration) {
 
         this._configuration = configuration;
     }

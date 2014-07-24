@@ -4,10 +4,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import org.apache.commons.configuration.reloading.ZooKeeperPathChildrenOnChangeReloadingStrategy;
+import org.apache.commons.configuration.reloading.ZKPathChildrenChangeEventReloadingStrategy;
 import org.junit.Test;
 
-public class ZooKeeperPathChildrenConfigurationTest extends ZooKeeperConfigurationTest {
+public class ZKPathChildrenConfigurationTest extends ZKConfigurationTest {
 
     @Test
     public void test() throws Exception {
@@ -17,8 +17,8 @@ public class ZooKeeperPathChildrenConfigurationTest extends ZooKeeperConfigurati
         client.create().creatingParentsIfNeeded().forPath("/pathChildren/prop2", "value2".getBytes());
 
         //
-        ZooKeeperPathChildrenConfiguration config = new ZooKeeperPathChildrenConfiguration(client, "/pathChildren");
-        config.setReloadingStrategy(new ZooKeeperPathChildrenOnChangeReloadingStrategy());
+        ZKPathChildrenBaseConfiguration config = new ZKPathChildrenBaseConfiguration(client, "/pathChildren");
+        config.setReloadingStrategy(new ZKPathChildrenChangeEventReloadingStrategy());
 
         assertThat(config.getString("prop1"), equalTo("value1"));
         assertThat(config.getString("prop2"), equalTo("value2"));

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-public class ZooKeeperXMLPropertiesConfigurationTest extends ZooKeeperConfigurationTest {
+public class ZKXMLPropertiesConfigurationTest extends ZKConfigurationTest {
 
     // ========================================================================
     //
@@ -17,7 +17,7 @@ public class ZooKeeperXMLPropertiesConfigurationTest extends ZooKeeperConfigurat
         // init zookeeper server
         createOrUpdatePath("/propertiesAsXml.xml", loadFileFromClasspath("propertiesAsXml.xml"));
 
-        ZooKeeperXMLPropertiesConfiguration config = new ZooKeeperXMLPropertiesConfiguration(client, "propertiesAsXml.xml");
+        ZKXMLPropertiesConfiguration config = new ZKXMLPropertiesConfiguration(client, "propertiesAsXml.xml");
         assertThat(config.getString("application.fullname"), equalTo("name-version"));
     }
 }

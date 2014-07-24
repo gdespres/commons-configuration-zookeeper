@@ -11,16 +11,26 @@ CuratorFramework client = CuratorFrameworkFactory.newClient(connectString, new E
 client.start();
 
 try {
-    ZooKeeperPropertiesConfiguration config = new ZooKeeperPropertiesConfiguration(client, "/path/to/file.properties");
+    ZKPropertiesConfiguration config = new ZKPropertiesConfiguration(client, "/path/to/file.properties");
     
     // add reloading strategy
-    config.setReloadingStrategy(new ZooKeeperNodeOnChangeReloadingStrategy()); // properties are reloaded when zookeeper node changes.
+    config.setReloadingStrategy(new ZKNodeChangeEventReloadingStrategy()); // properties are reloaded when zookeeper node changes.
     
     // add listener
     config.addConfigurationListener(new ConfigurationListener() {
         public void configurationChanged(final ConfigurationEvent event) {
-            if (!event.isBeforeUpdate() && event.getType() == ZooKeeperNodeConfiguration.EVENT_RELOAD) {
-                System.out.println("Path '" + event.getPropertyValue() + "' has changed !");
+            if (!event.isBeforeUpdate()) {
+                switch(event.getType()) {
+                    case ZKPropertiesConfiguration.EVENT_NODE_CREATE : 
+                        System.out.println("Path '" + event.getPropertyValue() + "' has been created !");
+                        break;
+                    case ZKPropertiesConfiguration.EVENT_NODE_UPDATE : 
+                        System.out.println("Path '" + event.getPropertyValue() + "' has been updated !");
+                        break;
+                    case ZKPropertiesConfiguration.EVENT_NODE_DELETE : 
+                        System.out.println("Path '" + event.getPropertyValue() + "' has been deleted !");
+                        break;
+                }
             }
         }
     });
@@ -28,7 +38,7 @@ try {
     String property = config.getString("property.name");
 } catch (ConfigurationException e) {
 
-    // Exception thrown if node doesn't exist or if node format is not valid.
+    // Exception thrown if node format is not valid.
 }
 ```
 

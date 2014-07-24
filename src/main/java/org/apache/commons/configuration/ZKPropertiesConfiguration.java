@@ -12,7 +12,7 @@ import org.apache.curator.framework.CuratorFramework;
 /**
  *
  */
-public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfiguration {
+public class ZKPropertiesConfiguration extends AbstractZKNodeConfiguration {
 
     // ========================================================================
     // CONSTRUCTORS
@@ -21,7 +21,7 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
     /**
      * @throws ConfigurationException
      */
-    public ZooKeeperPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
+    public ZKPropertiesConfiguration(final CuratorFramework client) throws ConfigurationException {
         super(client);
     }
 
@@ -29,7 +29,7 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
      * @throws ConfigurationException
      *
      */
-    public ZooKeeperPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
+    public ZKPropertiesConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
         super(client, path);
     }
 
@@ -37,11 +37,15 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
     // PUBLIC METHODS
     // ========================================================================
 
+    // ========================================================================
+    // PROTECTED METHODS
+    // ========================================================================
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void load(final InputStream in) throws ConfigurationException {
+    protected void load(final InputStream in) throws ConfigurationException {
 
         Properties properties = new Properties();
         try {
@@ -54,8 +58,4 @@ public class ZooKeeperPropertiesConfiguration extends AbstractZooKeeperNodeConfi
             throw new ConfigurationException("Unable to load properties for path " + getPath(), e);
         }
     }
-
-    // ========================================================================
-    // PROTECTED METHODS
-    // ========================================================================
 }

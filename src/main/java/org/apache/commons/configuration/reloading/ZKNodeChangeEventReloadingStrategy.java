@@ -3,27 +3,27 @@
  */
 package org.apache.commons.configuration.reloading;
 
-import org.apache.commons.configuration.IZooKeeperNodeConfiguration;
+import org.apache.commons.configuration.ZKNodeConfiguration;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 
 /**
  *
  */
-public class ZooKeeperNodeOnChangeReloadingStrategy implements IZooKeeperNodeReloadingStrategy {
+public class ZKNodeChangeEventReloadingStrategy implements ZKNodeReloadingStrategy {
 
     // ========================================================================
     // ATTRIBUTES
     // ========================================================================
 
-    private IZooKeeperNodeConfiguration _configuration;
+    private ZKNodeConfiguration _configuration;
 
     // ========================================================================
     // PUBLIC METHODS
     // ========================================================================
 
     @Override
-    public void setConfiguration(final IZooKeeperNodeConfiguration configuration) {
+    public void setConfiguration(final ZKNodeConfiguration configuration) {
 
         this._configuration = configuration;
     }

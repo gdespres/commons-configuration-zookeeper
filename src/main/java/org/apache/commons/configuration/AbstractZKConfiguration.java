@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.configuration.reloading.IZooKeeperReloadingStrategy;
-import org.apache.commons.configuration.reloading.ZooKeeperInvariantReloadingStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.LogFactory;
 import org.apache.curator.framework.CuratorFramework;
@@ -18,9 +16,9 @@ import org.apache.curator.framework.CuratorFramework;
 /**
  *
  */
-public abstract class AbstractZooKeeperConfiguration
+public abstract class AbstractZKConfiguration
         extends BaseConfiguration
-        implements IZooKeeperConfiguration {
+        implements ZKConfiguration {
 
     // ========================================================================
     // ATTRIBUTES
@@ -36,10 +34,7 @@ public abstract class AbstractZooKeeperConfiguration
     protected Object _reloadLock = new Lock("AbstractZooKeeperConfiguration");
 
     /** Counter that prohibits reloading */
-    private int _noReload;
-
-    /** Holds a reference to the reloading strategy */
-    protected IZooKeeperReloadingStrategy _strategy;
+    protected int _noReload;
 
     // ========================================================================
     // CONSTRUCTORS
@@ -48,9 +43,8 @@ public abstract class AbstractZooKeeperConfiguration
     /**
      *
      */
-    public AbstractZooKeeperConfiguration(final CuratorFramework client) {
+    public AbstractZKConfiguration(final CuratorFramework client) {
 
-        initReloadingStrategy();
         setLogger(LogFactory.getLog(getClass()));
         addErrorLogListener();
 
@@ -58,12 +52,12 @@ public abstract class AbstractZooKeeperConfiguration
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @param client
      * @param path
      */
-    public AbstractZooKeeperConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
+    public AbstractZKConfiguration(final CuratorFramework client, final String path) throws ConfigurationException {
 
         this(client);
 
@@ -78,11 +72,6 @@ public abstract class AbstractZooKeeperConfiguration
     // PUBLIC METHODS
     // ========================================================================
 
-    public IZooKeeperReloadingStrategy getReloadingStrategy() {
-
-        return this._strategy;
-    }
-
     @Override
     public void setPath(final String path) {
 
@@ -94,17 +83,6 @@ public abstract class AbstractZooKeeperConfiguration
     public String getPath() {
 
         return this._path;
-    }
-
-    /**
-     * Load the configuration from the underlying path.
-     * 
-     * @throws ConfigurationException
-     *             if loading of the configuration fails.
-     */
-    public void load() throws ConfigurationException {
-
-        load(getPath());
     }
 
     /**
@@ -135,43 +113,6 @@ public abstract class AbstractZooKeeperConfiguration
         synchronized (_reloadLock) {
             super.clearProperty(pKey);
         }
-    }
-
-    public void reload() {
-        synchronized (_reloadLock) {
-            if (_noReload == 0) {
-                try {
-                    enterNoReload();
-                    // if (_strategy.reloadingRequired()) {
-                    // if (getLogger().isInfoEnabled()) {
-                    // getLogger().info("Reloading configuration for path " +
-                    // getPath());
-                    // }
-                    refresh();
-                    //
-                    // // notify the strategy
-                    // _strategy.reloadingPerformed();
-                    // }
-                } catch (Exception e) {
-                    fireError(EVENT_RELOAD, null, null, e);
-                } finally {
-                    exitNoReload();
-                }
-            }
-        }
-    }
-
-    public void refresh() throws ConfigurationException {
-
-        fireEvent(EVENT_RELOAD, null, getPath(), true);
-        setDetailEvents(false);
-        try {
-            clear();
-            load();
-        } finally {
-            setDetailEvents(true);
-        }
-        fireEvent(EVENT_RELOAD, null, getPath(), false);
     }
 
     /**
@@ -260,7 +201,7 @@ public abstract class AbstractZooKeeperConfiguration
     }
 
     /**
-     * 
+     *
      * @param closeable
      */
     protected final void closeSilent(final Closeable closeable) {
@@ -277,11 +218,4 @@ public abstract class AbstractZooKeeperConfiguration
     // PRIVATE METHODS
     // ========================================================================
 
-    /**
-     * Helper method for initializing the reloading strategy.
-     */
-    private void initReloadingStrategy() {
-
-        this._strategy = new ZooKeeperInvariantReloadingStrategy();
-    }
 }

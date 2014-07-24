@@ -20,7 +20,7 @@ import com.google.common.io.ByteStreams;
 /**
  *
  */
-public class ZooKeeperConfigurationTest {
+public class ZKConfigurationTest {
 
     // ========================================================================
     // ATTRIBUTES

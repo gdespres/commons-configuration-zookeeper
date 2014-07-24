@@ -3,16 +3,18 @@
  */
 package org.apache.commons.configuration;
 
+import org.apache.commons.logging.Log;
+
 /**
  *
  */
-public interface IZooKeeperConfiguration extends Configuration {
+public interface ZKConfiguration extends Configuration {
 
     // ========================================================================
     // CONSTANTS
     // ========================================================================
 
-    public static final int EVENT_RELOAD = 20;
+    //public static final int EVENT_RELOAD = 20;
 
     // ========================================================================
     // PUBLIC METHODS
@@ -22,5 +24,9 @@ public interface IZooKeeperConfiguration extends Configuration {
 
     String getPath();
 
-    void load(String path) throws ConfigurationException;
+    void load() throws ConfigurationException;
+
+    //void load(String path) throws ConfigurationException;
+
+    Log getLogger();
 }

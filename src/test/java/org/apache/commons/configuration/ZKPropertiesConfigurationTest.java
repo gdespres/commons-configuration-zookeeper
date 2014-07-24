@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  *
  */
-public class ZooKeeperPropertiesConfigurationTest extends ZooKeeperConfigurationTest {
+public class ZKPropertiesConfigurationTest extends ZKConfigurationTest {
 
     // ========================================================================
     //
@@ -23,7 +23,7 @@ public class ZooKeeperPropertiesConfigurationTest extends ZooKeeperConfiguration
         // init zookeeper server
         createOrUpdatePath("test1.properties", loadFileFromClasspath("test1.properties"));
 
-        ZooKeeperPropertiesConfiguration config = new ZooKeeperPropertiesConfiguration(client);
+        ZKPropertiesConfiguration config = new ZKPropertiesConfiguration(client);
         config.setPath("test1.properties");
         config.load();
 
@@ -36,7 +36,7 @@ public class ZooKeeperPropertiesConfigurationTest extends ZooKeeperConfiguration
         assertThat(property, equalTo("salut world !!!"));
 
         // refresh
-        config.refresh();
+        config.reload();
         property = config.getString("prop.helloworld");
         assertThat(property, equalTo("hello world !!!"));
     }
